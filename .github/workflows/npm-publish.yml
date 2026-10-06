@@ -1,0 +1,49 @@
+name: Publish andru-intel to npm
+
+# Manual or on a version tag. Publishes with npm trusted publishing (OIDC): no npm token, no
+# one-time code. Configure once on npmjs.com → andru-intel → Settings → Trusted Publisher:
+# GitHub Actions · geter-andru / andru-intel · npm-publish.yml · "Allow npm publish".
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Check and publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install
+        run: npm ci
+
+      - name: Smoke test
+        run: |
+          node src/index.js --help
+          node src/index.js --help | grep -q "generate"
+
+      - name: Scan the packed artifact for secrets
+        run: |
+          npm pack
+          mkdir unpacked && tar -xzf ./*.tgz -C unpacked
+          if grep -rEn "sk_live_[A-Za-z0-9]{16,}|sk-ant-[A-Za-z0-9_-]{20,}|xox[abp]-[A-Za-z0-9-]{10,}|eyJ[A-Za-z0-9_-]{30,}\.[A-Za-z0-9_-]{30,}|-----BEGIN [A-Z ]*PRIV""ATE KEY-----" unpacked; then
+            echo "Possible secret in the package — refusing to publish." && exit 1
+          fi
+          tar -tzf ./*.tgz
+
+      - name: Update npm for trusted publishing
+        run: npm install -g npm@latest
+
+      - name: Publish with provenance
+        run: npm publish --provenance --access public

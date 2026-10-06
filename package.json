@@ -1,0 +1,43 @@
+{
+  "name": "andru-intel",
+  "version": "1.1.0",
+  "description": "Andru from your terminal \u2014 buyer intelligence, sales hiring, investor matching, and 138 catalog assets (board decks, playbooks, business cases) generated as markdown.",
+  "type": "module",
+  "bin": {
+    "andru-intel": "./src/index.js"
+  },
+  "files": [
+    "src/"
+  ],
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "icp",
+    "sales",
+    "revenue-intelligence",
+    "b2b",
+    "saas",
+    "founder",
+    "cli"
+  ],
+  "author": "Brandon Geter <geter@humusnshore.org>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "commander": "^13.1.0",
+    "chalk": "^5.4.1",
+    "cli-table3": "^0.6.5",
+    "ora": "^8.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geter-andru/andru-intel.git"
+  },
+  "homepage": "https://andru-ai.com",
+  "bugs": {
+    "url": "https://github.com/geter-andru/andru-intel/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
