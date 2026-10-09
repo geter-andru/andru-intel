@@ -51,3 +51,7 @@ test('the README says free calls are per channel, not shared', () => {
   assert.doesNotMatch(readme, /shared (across|with) (MCP|A2A)/i);
   assert.match(readme, /5 free calls a day on MCP and another 5 on A2A/);
 });
+
+test('tool list uses buyer-side language (approved by Geter, 2026-10-09)', () => {
+  assert.doesNotMatch(Object.values(TOOL_DESCRIPTIONS).join('\n'), /MBTI|battle ?card|objection/i);
+});
