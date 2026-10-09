@@ -10,14 +10,20 @@
 
 import { formatJSON } from '../formatters/json.js';
 
+// The 30 tools the Andru backend and the MCP server (1.9.0) serve (Geter, 2026-10-08). The CRM
+// tools (get_syndication_status, trigger_syndication, sync_crm_deals) are held back until CRM sync
+// is ready; the backend refuses them.
 const ALL_TOOLS = [
   'get_icp_fit_score', 'get_persona_profile', 'get_disqualification_signals',
   'get_messaging_framework', 'get_competitive_positioning', 'classify_opportunity',
   'get_account_plan', 'get_capability_profile', 'get_evaluation_criteria',
   'get_icp_profile', 'discover_prospects', 'get_pre_brief',
-  'get_syndication_status', 'trigger_syndication', 'batch_fit_score',
-  'get_sales_blueprint', 'get_thesis_match', 'get_founder_wellness',
-  'simulate_buyer_persona',
+  'batch_fit_score', 'get_sales_blueprint', 'get_thesis_match',
+  'get_founder_wellness', 'simulate_buyer_persona',
+  'get_revenue_memory', 'log_revenue_insight', 'get_founder_context', 'get_memory_history',
+  'get_market_signals', 'assess_company_readiness', 'get_portfolio_readiness_rollup',
+  'generate_portfolio_brief', 'consult_agent',
+  'list_assets', 'generate_asset', 'get_asset', 'set_product_context',
 ];
 
 export { ALL_TOOLS };

@@ -1,7 +1,7 @@
 {
   "name": "andru-intel",
-  "version": "1.1.0",
-  "description": "Andru from your terminal \u2014 buyer intelligence, sales hiring, investor matching, and 138 catalog assets (board decks, playbooks, business cases) generated as markdown.",
+  "version": "1.2.0",
+  "description": "Revenue intelligence for complex B2B growth. Your agent builds the assets technical founders sell with, and prepares them for real buyer conversations.",
   "type": "module",
   "bin": {
     "andru-intel": "./src/index.js"
@@ -10,7 +10,8 @@
     "src/"
   ],
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "node --test test/*.test.js"
   },
   "keywords": [
     "icp",

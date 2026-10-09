@@ -5,7 +5,7 @@
  * andru-intel generate "<asset name>" [--out file.md] [--no-wait]
  * andru-intel get-asset <job_id> [--out file.md]
  *
- * Search Andru's 138-asset catalog (free), generate any asset at its catalog price
+ * Search Andru's 139-asset catalog (free), generate any asset at its catalog price
  * (Tool $3 / Framework $12 / Decision $49; your first ICP is free), and save it as markdown.
  * Requires ANDRU_API_KEY.
  */

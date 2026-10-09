@@ -3,8 +3,8 @@
 /**
  * andru-intel CLI
  *
- * Operational empathy for technical SaaS founders.
- * 19 tools — ICP scoring, buyer personas, deal intelligence, and more.
+ * Revenue intelligence for complex B2B growth.
+ * Andru's 30 tools from your terminal.
  *
  * Two tiers:
  *   - No API key (default): instant cold-start ICP from local logic
@@ -19,7 +19,7 @@ import { blueprintCommand } from './commands/blueprint.js';
 import { thesisCommand } from './commands/thesis.js';
 import { wellnessCommand } from './commands/wellness.js';
 import { roleplayCommand } from './commands/roleplay.js';
-import { runCommand } from './commands/run.js';
+import { runCommand, ALL_TOOLS } from './commands/run.js';
 import { listCommand } from './commands/list.js';
 import { assetsCommand, generateCommand, getAssetCommand } from './commands/assets.js';
 
@@ -27,7 +27,7 @@ const program = new Command();
 
 program
   .name('andru-intel')
-  .description('Stakeholder understanding for technical founders — 19 tools from your terminal')
+  .description(`Revenue intelligence for complex B2B growth — ${ALL_TOOLS.length} tools from your terminal`)
   .version('1.1.0');
 
 program
@@ -97,6 +97,9 @@ program
   .description('Run any MCP tool directly (andru-intel run <tool> [--param value])')
   .argument('<tool>', 'Tool name (run andru-intel list to see all)')
   .allowUnknownOption()
+  // Commander 13 rejects the values of unknown --param flags as excess arguments, so
+  // 'run <tool> --param value' never worked in 1.1.0. The action reads the raw argv itself.
+  .allowExcessArguments()
   .action((tool, options, cmd) => {
     // Pass remaining args after tool name for parsing
     const rawArgs = cmd.args.slice(0); // commander puts unknown options here
@@ -112,10 +115,10 @@ program
 
 
 
-// Asset catalog (1.1.0): 138 deliverables from Andru's catalog, as markdown.
+// Asset catalog (1.1.0): 139 deliverables from Andru's catalog, as markdown.
 program
   .command('assets')
-  .description("Search Andru's asset catalog — 138 deliverables, Tool $3 / Framework $12 / Decision $49 (free to search)")
+  .description("Search Andru's asset catalog — 139 deliverables, Tool $3 / Framework $12 / Decision $49 (free to search)")
   .argument('[keywords...]', 'What you need, e.g. board deck, buying committee, first sales hire')
   .option('-g, --group <group>', 'Core, Advanced, Strategic or Buy-side')
   .option('-a, --available', 'Only assets you can generate today')

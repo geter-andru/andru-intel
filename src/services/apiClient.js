@@ -52,7 +52,10 @@ export class AndruClient {
         let msg;
         try {
           const parsed = JSON.parse(errorBody);
-          msg = parsed.error || parsed.message || `HTTP ${response.status}`;
+          // The backend sends { error: 'text' } or { error: { code, message } }; an object here
+          // printed as "[object Object]" in 1.1.0.
+          const e = parsed.error;
+          msg = (typeof e === 'string' && e) || e?.message || parsed.message || `HTTP ${response.status}`;
         } catch {
           msg = `HTTP ${response.status}: ${errorBody.slice(0, 200)}`;
         }

@@ -1,6 +1,8 @@
 # andru-intel
 
-Andru from your terminal. Buyer intelligence, sales hiring, investor matching, and Andru's catalog of 138 assets — board decks, playbooks, business cases — generated from what Andru knows about your company and saved as markdown.
+Revenue intelligence for complex B2B growth. Your agent builds the assets technical founders sell with, and prepares them for real buyer conversations.
+
+Andru from your terminal: all 30 of Andru's tools, and its catalog of 139 assets (board decks, playbooks, business cases) generated from what Andru knows about your company and saved as markdown.
 
 ```bash
 npx andru-intel --help
@@ -40,12 +42,12 @@ npx andru-intel get-asset <job_id> --out map.md
 | `thesis "<product>"` | VC thesis matches |
 | `wellness` | Founder burnout check |
 | `roleplay [persona]` | Practise a pitch against a buyer persona |
-| `run <tool> [--param value]` | Run any Andru MCP tool directly |
+| `run <tool> [--param value]` | Run any of Andru's 30 tools directly (`list` shows them) |
 | `list` | All tools and commands |
 
 ## Pricing
 
-The same work costs the same as in the Andru platform, paid from your Andru wallet. Answers from your own data are free. Pre-meeting brief $1.50, buyer role-play $5, catalog assets $3 / $12 / $49. See [andru-ai.com/pricing](https://andru-ai.com/pricing).
+The same work costs the same as in the Andru platform, paid from your Andru wallet. Prepare for real conversations with buyer role-play ($5 for a 25-turn session) and pre-meeting briefs ($3). Lookups are free. Every asset is a Tool ($3), Framework ($12) or Decision ($49). 5 free calls a day, shared across MCP and A2A, cover paid calls of $3 or less. See [andru-ai.com/pricing](https://andru-ai.com/pricing).
 
 ## Environment
 
