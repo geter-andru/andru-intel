@@ -44,7 +44,7 @@ export function formatICP(result) {
     lines.push('');
 
     result.personas.forEach(persona => {
-      lines.push(bold(`    ${persona.title}`) + dim(` (${persona.name}) — ${persona.role}`));
+      lines.push(bold(`    ${persona.title}`) + dim(` — ${persona.role}`));
       lines.push(dim('    ' + persona.dayInTheLife));
       lines.push('');
 
@@ -71,13 +71,13 @@ export function formatICP(result) {
     lines.push(accent('  Buying Committee'));
 
     const table = new Table({
-      head: ['Role', 'Title', 'Name'],
+      head: ['Role', 'Title'],
       style: { head: ['cyan'], border: ['gray'] },
-      colWidths: [22, 30, 12],
+      colWidths: [22, 30],
     });
 
     result.buyingCommittee.forEach(m => {
-      table.push([m.role, m.title, m.name]);
+      table.push([m.role, m.title]);
     });
 
     lines.push(table.toString());
@@ -98,7 +98,7 @@ export function formatPersona(persona) {
   const lines = [];
 
   lines.push('');
-  lines.push(accent.bold(`  ${persona.title}`) + dim(` (${persona.firstName})`));
+  lines.push(accent.bold(`  ${persona.title}`));
   lines.push(dim('  ─────────────────────────────────────────'));
   lines.push('');
 

@@ -47,7 +47,7 @@ npx andru-intel get-asset <job_id> --out map.md
 
 ## Pricing
 
-The same work costs the same as in the Andru platform, paid from your Andru wallet. Prepare for real conversations with buyer role-play ($5 for a 25-turn session) and pre-meeting briefs ($3). Lookups are free. Every asset is a Tool ($3), Framework ($12) or Decision ($49). 5 free calls a day, shared across MCP and A2A, cover paid calls of $3 or less. See [andru-ai.com/pricing](https://andru-ai.com/pricing).
+The same work costs the same as in the Andru platform, paid from your Andru wallet. Prepare for real conversations with buyer role-play ($5 for a 25-turn session) and pre-meeting briefs ($3). Lookups are free. Every asset is a Tool ($3), Framework ($12) or Decision ($49). 5 free calls a day on MCP and another 5 on A2A cover paid calls of $3 or less. See [andru-ai.com/pricing](https://andru-ai.com/pricing).
 
 ## Environment
 

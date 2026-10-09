@@ -9,7 +9,6 @@
 const BUYER_PERSONAS = {
   CFO: {
     title: 'Chief Financial Officer',
-    firstName: 'Janet',
     demographics: { typicalAge: '45-55', background: 'Finance, Accounting, MBA' },
     authority: { budgetControl: 'high', decisionPower: 'economic_buyer', influence: 'final_approval' },
     dayInTheLife: 'Reviews P&L before 7 AM. Challenges every line item. Needs ROI in months, not years.',
@@ -24,7 +23,6 @@ const BUYER_PERSONAS = {
   },
   CTO: {
     title: 'Chief Technology Officer',
-    firstName: 'Marcus',
     demographics: { typicalAge: '35-50', background: 'Engineering, Computer Science, PhD' },
     authority: { budgetControl: 'medium', decisionPower: 'technical_buyer', influence: 'technical_veto' },
     dayInTheLife: 'First check: system alerts. Then architecture reviews. Skeptical of vendors who can\'t explain their stack.',
@@ -39,7 +37,6 @@ const BUYER_PERSONAS = {
   },
   COO: {
     title: 'Chief Operating Officer',
-    firstName: 'Diana',
     demographics: { typicalAge: '40-55', background: 'Operations, MBA, Process Engineering' },
     authority: { budgetControl: 'medium', decisionPower: 'operational_buyer', influence: 'process_approval' },
     dayInTheLife: 'Thinks in workflows and bottlenecks. Measures everything in team hours saved.',
@@ -54,7 +51,6 @@ const BUYER_PERSONAS = {
   },
   'VP Sales': {
     title: 'VP of Sales',
-    firstName: 'Rob',
     demographics: { typicalAge: '38-50', background: 'Sales Leadership, Revenue Operations' },
     authority: { budgetControl: 'low', decisionPower: 'user_buyer', influence: 'champion_or_blocker' },
     dayInTheLife: 'Lives in pipeline dashboards. Judges everything by pipeline velocity and win rate.',
@@ -69,7 +65,6 @@ const BUYER_PERSONAS = {
   },
   'VP Engineering': {
     title: 'VP of Engineering',
-    firstName: 'Priya',
     demographics: { typicalAge: '35-48', background: 'Software Engineering, Technical Leadership' },
     authority: { budgetControl: 'low', decisionPower: 'technical_evaluator', influence: 'technical_recommendation' },
     dayInTheLife: 'Protects engineering time fiercely. Values documentation over demos.',
@@ -154,7 +149,6 @@ export function buildLocalICP({ description, vertical, role }) {
     const p = BUYER_PERSONAS[key];
     return {
       title: p.title,
-      name: p.firstName,
       role: p.authority.decisionPower.replace('_', ' '),
       dayInTheLife: p.dayInTheLife,
       successMetrics: p.successMetrics,
@@ -172,7 +166,6 @@ export function buildLocalICP({ description, vertical, role }) {
     buyingCommittee: Object.entries(BUYER_PERSONAS).map(([key, p]) => ({
       role: p.authority.decisionPower.replace('_', ' '),
       title: p.title,
-      name: p.firstName,
     })),
     source: 'cold_start',
   };

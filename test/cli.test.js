@@ -39,3 +39,15 @@ test('the README states the real counts and current prices', () => {
   assert.match(readme, /catalog of 139 assets/);
   assert.doesNotMatch(readme, /\b138\b|\$1\.50|\b19 tools/);
 });
+
+test('offline personas are titles only, no fictional names (Geter, 2026-10-09)', async () => {
+  const { buildLocalICP, getPersona, listPersonaKeys } = await import('../src/services/localICP.js');
+  const out = JSON.stringify([buildLocalICP({ description: 'AI code review for fintech' }), ...listPersonaKeys().map(getPersona)]);
+  assert.doesNotMatch(out, /Janet|Marcus|Diana|"Rob"|Priya|firstName/);
+});
+
+test('the README says free calls are per channel, not shared', () => {
+  const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
+  assert.doesNotMatch(readme, /shared (across|with) (MCP|A2A)/i);
+  assert.match(readme, /5 free calls a day on MCP and another 5 on A2A/);
+});
