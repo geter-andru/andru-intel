@@ -55,3 +55,15 @@ test('the README says free calls are per channel, not shared', () => {
 test('tool list uses buyer-side language (approved by Geter, 2026-10-09)', () => {
   assert.doesNotMatch(Object.values(TOOL_DESCRIPTIONS).join('\n'), /MBTI|battle ?card|objection/i);
 });
+
+test('role-play prepares for the real meeting, not pitch practice (Geter, 2026-10-09)', () => {
+  const text = ['src/index.js', 'src/commands/list.js', 'README.md'].map((f) => readFileSync(new URL(`../${f}`, import.meta.url), 'utf8')).join('\n');
+  assert.doesNotMatch(text, /practi[cs]e (your|a) pitch|pitch practice|push(es)? back/i);
+});
+
+test('--version prints the package version', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
+  const r = spawnSync(process.execPath, ['src/index.js', '--version'], { cwd: new URL('..', import.meta.url), encoding: 'utf8' });
+  assert.equal(r.stdout.trim(), pkg.version);
+});

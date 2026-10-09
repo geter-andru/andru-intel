@@ -41,7 +41,7 @@ npx andru-intel get-asset <job_id> --out map.md
 | `blueprint` | First sales hire blueprint |
 | `thesis "<product>"` | VC thesis matches |
 | `wellness` | Founder burnout check |
-| `roleplay [persona]` | Practise a pitch against a buyer persona |
+| `roleplay [persona]` | Prepare for a meeting: Andru asks the questions your real buyers ask |
 | `run <tool> [--param value]` | Run any of Andru's 30 tools directly (`list` shows them) |
 | `list` | All tools and commands |
 

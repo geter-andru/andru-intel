@@ -11,6 +11,7 @@
  *   - With ANDRU_API_KEY: AI-powered deep intelligence via Andru backend
  */
 
+import { readFileSync } from 'node:fs';
 import { Command } from 'commander';
 import { scoreCommand } from './commands/score.js';
 import { personaCommand } from './commands/persona.js';
@@ -28,7 +29,7 @@ const program = new Command();
 program
   .name('andru-intel')
   .description(`Revenue intelligence for complex B2B growth — ${ALL_TOOLS.length} tools from your terminal`)
-  .version('1.1.0');
+  .version(JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version);
 
 program
   .command('score')
@@ -85,7 +86,7 @@ program
 
 program
   .command('roleplay')
-  .description('Simulate buyer persona conversation for pitch practice')
+  .description('Prepare for a meeting: Andru asks the questions your real buyers ask')
   .argument('[persona]', 'Buyer persona (CFO, CTO, COO, "VP Sales", "VP Engineering")')
   .option('-p, --product <product>', 'Product context for the simulation')
   .option('-l, --list', 'List available personas')

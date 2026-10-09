@@ -24,7 +24,7 @@ export const TOOL_DESCRIPTIONS = {
   get_sales_blueprint: 'First sales hire blueprint',
   get_thesis_match: 'Match against VC investment theses',
   get_founder_wellness: 'Burnout risk assessment',
-  simulate_buyer_persona: 'Simulate buyer persona conversation',
+  simulate_buyer_persona: 'Prepare for a meeting: Andru asks the questions your real buyers ask',
   get_revenue_memory: 'What Andru has learned about your business over time',
   log_revenue_insight: 'Save an insight, decision, metric or pattern to memory',
   get_founder_context: 'Everything Andru knows about you, by memory type',
@@ -53,7 +53,7 @@ export function listCommand() {
   console.log('    blueprint                First sales hire blueprint');
   console.log('    thesis <description>     VC thesis matching');
   console.log('    wellness                 Founder burnout check');
-  console.log('    roleplay <persona>       Buyer persona simulation');
+  console.log('    roleplay <persona>       Prepare for a meeting: Andru asks the questions your real buyers ask');
   console.log('');
 
   console.log(chalk.bold('  All Tools') + chalk.gray(' (via andru-intel run <tool> [--args])'));
