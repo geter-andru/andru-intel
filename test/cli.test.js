@@ -67,3 +67,12 @@ test('--version prints the package version', async () => {
   const r = spawnSync(process.execPath, ['src/index.js', '--version'], { cwd: new URL('..', import.meta.url), encoding: 'utf8' });
   assert.equal(r.stdout.trim(), pkg.version);
 });
+
+test('requests report the real version and only send X-API-Key when there is a key', async () => {
+  const { userAgent, requestHeaders } = await import('../src/services/apiClient.js');
+  const version = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version;
+  assert.equal(userAgent({}), `andru-intel-cli/${version}`);
+  assert.equal(userAgent({ ANDRU_TEST_RUN: '1' }), `andru-intel-cli/${version} (test)`);
+  assert.equal('X-API-Key' in requestHeaders(undefined, {}), false);
+  assert.equal(requestHeaders('sk_live_x', {})['X-API-Key'], 'sk_live_x');
+});

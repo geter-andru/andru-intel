@@ -5,7 +5,24 @@
  * Used for AI-powered operations when ANDRU_API_KEY is set.
  */
 
+import { readFileSync } from 'node:fs';
+
 const DEFAULT_API_URL = 'https://api.andru-ai.com';
+const VERSION = (() => {
+  try { return JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')).version; } catch { return 'unknown'; }
+})();
+
+/** The real version (every release sent "0.1.0" before 1.2.4); "(test)" marks our own test runs. */
+export function userAgent(env = process.env) {
+  return `andru-intel-cli/${VERSION}${env.ANDRU_TEST_RUN === '1' ? ' (test)' : ''}`;
+}
+
+/** Only send X-API-Key when there is a key: a missing key went out as the text "undefined". */
+export function requestHeaders(apiKey, env = process.env) {
+  const headers = { 'Content-Type': 'application/json', 'User-Agent': userAgent(env) };
+  if (apiKey) headers['X-API-Key'] = apiKey;
+  return headers;
+}
 const REQUEST_TIMEOUT_MS = 90_000; // 90s for AI operations
 
 export class AndruClient {
@@ -38,11 +55,7 @@ export class AndruClient {
     try {
       const response = await fetch(`${this.baseUrl}${path}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-Key': this.apiKey,
-          'User-Agent': 'andru-intel-cli/0.1.0',
-        },
+        headers: requestHeaders(this.apiKey),
         body: JSON.stringify(body),
         signal: controller.signal,
       });
