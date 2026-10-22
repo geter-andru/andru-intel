@@ -76,3 +76,12 @@ test('requests report the real version and only send X-API-Key when there is a k
   assert.equal('X-API-Key' in requestHeaders(undefined, {}), false);
   assert.equal(requestHeaders('sk_live_x', {})['X-API-Key'], 'sk_live_x');
 });
+
+test('every named command calls a tool the backend has (brief called "pre-meeting-brief" through 1.2.4)', async () => {
+  const { readdirSync } = await import('node:fs');
+  const dir = new URL('../src/commands/', import.meta.url);
+  for (const f of readdirSync(dir)) {
+    const src = readFileSync(new URL(f, dir), 'utf8');
+    for (const [, name] of src.matchAll(/callTool\(\s*['"]([^'"]+)['"]/g)) assert.ok(ALL_TOOLS.includes(name), `${f} calls unknown tool ${name}`);
+  }
+});

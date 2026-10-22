@@ -40,12 +40,20 @@ export async function wellnessCommand(options) {
       console.log('');
       try {
         const data = JSON.parse(content);
-        if (data.burnoutRisk) {
-          const riskColor = data.burnoutRisk.level === 'high' ? chalk.red :
-            data.burnoutRisk.level === 'medium' ? chalk.yellow : chalk.green;
-          console.log(chalk.bold('  Burnout Risk: ') + riskColor(data.burnoutRisk.level.toUpperCase()));
-          if (data.burnoutRisk.score) {
-            console.log(chalk.bold('  Score: ') + riskColor(`${data.burnoutRisk.score}/100`));
+        // The backend returns riskLevel / burnoutScore (and status 'not_scored' with a message when
+        // there's no activity to measure); burnoutRisk.{level,score} is the shape before 1.2.5.
+        const level = data.riskLevel ?? data.burnoutRisk?.level;
+        const score = data.burnoutScore ?? data.burnoutRisk?.score;
+        if (data.status === 'not_scored' && data.message) {
+          console.log('  ' + data.message);
+          console.log('');
+        }
+        if (level) {
+          const riskColor = level === 'high' || level === 'critical' ? chalk.red :
+            level === 'moderate' || level === 'medium' ? chalk.yellow : chalk.green;
+          console.log(chalk.bold('  Burnout Risk: ') + riskColor(level.toUpperCase()));
+          if (score != null) {
+            console.log(chalk.bold('  Score: ') + riskColor(`${score}/100`));
           }
           console.log('');
         }
@@ -54,7 +62,7 @@ export async function wellnessCommand(options) {
           data.recommendations.forEach(r => console.log('    ' + chalk.gray('•') + ' ' + r));
           console.log('');
         }
-        if (!data.burnoutRisk && !data.recommendations) {
+        if (!level && !data.recommendations?.length && data.status !== 'not_scored') {
           console.log(JSON.stringify(data, null, 2));
         }
       } catch {

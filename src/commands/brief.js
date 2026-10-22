@@ -25,9 +25,10 @@ export async function briefCommand(company, options) {
     const { AndruClient } = await import('../services/apiClient.js');
     const client = new AndruClient(process.env.ANDRU_API_KEY);
 
-    const result = await client.callTool('pre-meeting-brief', {
+    // The backend tool is get_pre_brief; 'pre-meeting-brief' never existed, so every brief failed before 1.2.5.
+    const result = await client.callTool('get_pre_brief', {
       companyName: company,
-      meetingType: options.type,
+      briefType: options.type,
     });
 
     spinner.stop();
@@ -35,8 +36,11 @@ export async function briefCommand(company, options) {
     if (options.json) {
       console.log(formatJSON(result));
     } else {
-      // Extract text content from MCP tool response
-      const content = result?.content?.[0]?.text || JSON.stringify(result, null, 2);
+      // The brief as markdown; older response shapes fall back to the MCP text or the raw JSON.
+      const text = result?.content?.[0]?.text;
+      let parsed = null;
+      try { parsed = text ? JSON.parse(text) : result; } catch { /* plain text */ }
+      const content = parsed?.brief?.raw || text || JSON.stringify(result, null, 2);
       console.log('');
       console.log(chalk.hex('#3B82F6').bold(`  Pre-Meeting Brief: ${company}`));
       console.log(chalk.gray('  ─────────────────────────────────────────'));
