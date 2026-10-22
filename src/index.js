@@ -15,11 +15,10 @@ import { readFileSync } from 'node:fs';
 import { Command } from 'commander';
 import { scoreCommand } from './commands/score.js';
 import { personaCommand } from './commands/persona.js';
-import { briefCommand } from './commands/brief.js';
+import { prepCommand } from './commands/prep.js';
 import { blueprintCommand } from './commands/blueprint.js';
 import { thesisCommand } from './commands/thesis.js';
 import { wellnessCommand } from './commands/wellness.js';
-import { roleplayCommand } from './commands/roleplay.js';
 import { runCommand, ALL_TOOLS } from './commands/run.js';
 import { listCommand } from './commands/list.js';
 import { assetsCommand, generateCommand, getAssetCommand } from './commands/assets.js';
@@ -49,12 +48,14 @@ program
   .action(personaCommand);
 
 program
-  .command('brief')
-  .description('Generate a pre-meeting intelligence brief (requires ANDRU_API_KEY)')
-  .argument('<company>', 'Target company name')
-  .option('-t, --type <type>', 'Brief type: discovery, demo, negotiation', 'discovery')
+  .command('prep')
+  .alias('brief')
+  .description('Prepare for a meeting: the pre-meeting brief, then the conversation in Deal Prep (requires ANDRU_API_KEY)')
+  .argument('<company>', 'Company you are meeting with')
+  .option('-c, --contact <name>', 'Person you are meeting (helps find the meeting on your calendar)')
+  .option('-t, --type <type>', 'Meeting type: general, discovery, demo, negotiation, renewal, expansion', 'discovery')
   .option('--json', 'Output raw JSON')
-  .action(briefCommand);
+  .action(prepCommand);
 
 program
   .command('blueprint')
@@ -83,15 +84,6 @@ program
   .option('-m, --mode <mode>', 'Mode: assessment or dashboard', 'assessment')
   .option('--json', 'Output raw JSON')
   .action(wellnessCommand);
-
-program
-  .command('roleplay')
-  .description('Prepare for a meeting: Andru asks the questions your real buyers ask')
-  .argument('[persona]', 'Buyer persona (CFO, CTO, COO, "VP Sales", "VP Engineering")')
-  .option('-p, --product <product>', 'Product context for the simulation')
-  .option('-l, --list', 'List available personas')
-  .option('--json', 'Output raw JSON')
-  .action(roleplayCommand);
 
 program
   .command('run')

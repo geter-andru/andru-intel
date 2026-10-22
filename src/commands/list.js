@@ -49,11 +49,10 @@ export function listCommand() {
   console.log(chalk.bold('  Named Commands') + chalk.gray(' (rich output)'));
   console.log('    score <description>      ICP scoring + stakeholder understanding');
   console.log('    persona <role>           Buyer persona deep dive');
-  console.log('    brief <company>          Pre-meeting intelligence brief');
+  console.log('    prep <company>           Pre-meeting brief, then the conversation in Deal Prep (alias: brief)');
   console.log('    blueprint                First sales hire blueprint');
   console.log('    thesis <description>     VC thesis matching');
   console.log('    wellness                 Founder burnout check');
-  console.log('    roleplay <persona>       Prepare for a meeting: Andru asks the questions your real buyers ask');
   console.log('');
 
   console.log(chalk.bold('  All Tools') + chalk.gray(' (via andru-intel run <tool> [--args])'));

@@ -49,7 +49,7 @@ test('offline personas are titles only, no fictional names (Geter, 2026-10-09)',
 test('the README says free calls are per channel, not shared', () => {
   const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
   assert.doesNotMatch(readme, /shared (across|with) (MCP|A2A)/i);
-  assert.match(readme, /5 free calls a day on MCP and another 5 on A2A/);
+  assert.match(readme, /5 free calls a day on MCP \(and another 5 on A2A\) cover pre-meeting briefs and quick thesis checks/);
 });
 
 test('tool list uses buyer-side language (approved by Geter, 2026-10-09)', () => {
@@ -103,4 +103,21 @@ test('the account ICP shows people by title and role, never by name', async () =
   assert.match(out, /VP Engineering/);
   assert.match(out, /CFO/);
   assert.doesNotMatch(out, /Jane Example/);
+});
+
+test('prep writes the brief and points to Deal Prep: the meeting when Andru matched one (Geter, 2026-10-22)', async () => {
+  const { prepareUrl } = await import('../src/commands/prep.js');
+  assert.equal(prepareUrl({ meeting: { eventId: 'evt 1' } }), 'https://platform.andru-ai.com/deal-prep?meeting=evt%201');
+  assert.equal(prepareUrl({}), 'https://platform.andru-ai.com/deal-prep');
+  const prep = readFileSync(new URL('../src/commands/prep.js', import.meta.url), 'utf8');
+  assert.match(prep, /callTool\('get_pre_brief'/);
+});
+
+test('roleplay is gone from the CLI; prep (alias brief) replaces it', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const help = spawnSync(process.execPath, ['src/index.js', '--help'], { cwd: new URL('..', import.meta.url), encoding: 'utf8' }).stdout;
+  assert.match(help, /prep\|brief/);
+  assert.doesNotMatch(help, /roleplay/);
+  const text = ['src/index.js', 'src/commands/list.js', 'README.md'].map((f) => readFileSync(new URL(`../${f}`, import.meta.url), 'utf8')).join('\n');
+  assert.doesNotMatch(text, /roleplay|rehears|\$3 or less/i);
 });

@@ -37,17 +37,16 @@ npx andru-intel get-asset <job_id> --out map.md
 |---|---|
 | `score "<product>"` | ICP intelligence for a product description |
 | `persona <role>` | Buyer persona for a role (CFO, CTO, …) |
-| `brief <company>` | Pre-meeting brief |
+| `prep <company>` | Prepare for a meeting: the pre-meeting brief, then a link to the conversation in Deal Prep (alias: `brief`) |
 | `blueprint` | First sales hire blueprint |
 | `thesis "<product>"` | VC thesis matches |
 | `wellness` | Founder burnout check |
-| `roleplay [persona]` | Prepare for a meeting: Andru asks the questions your real buyers ask |
 | `run <tool> [--param value]` | Run any of Andru's 30 tools directly (`list` shows them) |
 | `list` | All tools and commands |
 
 ## Pricing
 
-The same work costs the same as in the Andru platform, paid from your Andru wallet. Prepare for real conversations with buyer role-play ($5 for a 25-turn session) and pre-meeting briefs ($3). Lookups are free. Every asset is a Tool ($3), Framework ($12) or Decision ($49). 5 free calls a day on MCP and another 5 on A2A cover paid calls of $3 or less. See [andru-ai.com/pricing](https://andru-ai.com/pricing).
+The same work costs the same as in the Andru platform, paid from your Andru wallet. Prepare for real conversations with buyer role-play ($5 for a 25-turn session) and pre-meeting briefs ($3). Lookups are free. Every asset is a Tool ($3), Framework ($12) or Decision ($49). 5 free calls a day on MCP (and another 5 on A2A) cover pre-meeting briefs and quick thesis checks; catalog assets are always paid. See [andru-ai.com/pricing](https://andru-ai.com/pricing).
 
 ## Environment
 
