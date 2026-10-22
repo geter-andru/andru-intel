@@ -32,16 +32,6 @@ export class AndruClient {
   }
 
   /**
-   * Generate AI-powered ICP via the demo endpoint.
-   */
-  async generateICP(productDescription) {
-    return this.post('/api/microapps/icp-generator/generate', {
-      productName: extractName(productDescription),
-      productDescription,
-    });
-  }
-
-  /**
    * Call an MCP tool on the backend.
    */
   async callTool(name, args) {
@@ -85,10 +75,4 @@ export class AndruClient {
       clearTimeout(timeout);
     }
   }
-}
-
-function extractName(description) {
-  const match = description.match(/^([^,\-–—.]+)/);
-  if (match && match[1].trim().length <= 60) return match[1].trim();
-  return description.split(/\s+/).slice(0, 5).join(' ');
 }

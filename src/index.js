@@ -34,10 +34,10 @@ program
 program
   .command('score')
   .description('Score a product and generate ICP intelligence')
-  .argument('<description>', 'Your product description (quote it)')
+  .argument('[description]', 'Your product description (quote it; not needed with --ai)')
   .option('-v, --vertical <vertical>', 'Target vertical (e.g., medical, defense, semiconductor)')
   .option('-r, --role <role>', 'Primary buyer role (e.g., CTO, CFO, "VP Sales")')
-  .option('--ai', 'Use AI-powered analysis (requires ANDRU_API_KEY)')
+  .option('--ai', "Show the ICP saved in your Andru account (requires ANDRU_API_KEY)")
   .option('--json', 'Output raw JSON')
   .action(scoreCommand);
 

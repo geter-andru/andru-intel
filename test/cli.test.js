@@ -85,3 +85,22 @@ test('every named command calls a tool the backend has (brief called "pre-meetin
     for (const [, name] of src.matchAll(/callTool\(\s*['"]([^'"]+)['"]/g)) assert.ok(ALL_TOOLS.includes(name), `${f} calls unknown tool ${name}`);
   }
 });
+
+test('score --ai reads the account ICP (get_icp_profile), not the retired microapps endpoint', () => {
+  const score = readFileSync(new URL('../src/commands/score.js', import.meta.url), 'utf8');
+  const client = readFileSync(new URL('../src/services/apiClient.js', import.meta.url), 'utf8');
+  assert.match(score, /callTool\('get_icp_profile'/);
+  assert.doesNotMatch(client, /microapps/);
+});
+
+test('the account ICP shows people by title and role, never by name', async () => {
+  const { formatAccountICP } = await import('../src/formatters/terminal.js');
+  const out = formatAccountICP({
+    product: { description: 'Observability' },
+    layer1: { companyIntelligence: { industry: 'SaaS', painTriggers: ['Outages'] } },
+    layer2: { personas: [{ title: 'VP Engineering', successMetrics: ['MTTR'] }], buyingCommittee: [{ role: 'Economic buyer', title: 'CFO', name: 'Jane Example' }] },
+  });
+  assert.match(out, /VP Engineering/);
+  assert.match(out, /CFO/);
+  assert.doesNotMatch(out, /Jane Example/);
+});

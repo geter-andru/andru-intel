@@ -133,63 +133,60 @@ export function formatPersona(persona) {
 /**
  * Format AI-powered ICP result for terminal.
  */
-export function formatAIICP(result) {
+/**
+ * Format the account's ICP (the get_icp_profile tool) for terminal. People are shown by title and
+ * role only, never by name.
+ */
+export function formatAccountICP(profile) {
   const lines = [];
+  const list = (label, items, style = accent) => {
+    if (!items?.length) return;
+    lines.push('  ' + style(label));
+    items.forEach((x) => lines.push('    ' + dim('•') + ' ' + x));
+    lines.push('');
+  };
 
   lines.push('');
-  lines.push(accent.bold('  ANDRU') + chalk.green(' [AI-Powered]'));
+  lines.push(accent.bold('  ANDRU') + chalk.green(' [Your ICP]'));
   lines.push(dim('  ─────────────────────────────────────────'));
   lines.push('');
 
-  const data = result.data || result;
-
-  if (data.refinedProductDescription) {
-    lines.push(bold('  Product: ') + data.refinedProductDescription);
+  if (profile.product?.description) {
+    lines.push(bold('  Product: ') + profile.product.description);
     lines.push('');
   }
 
-  if (data.coreCapability) {
-    lines.push(accent('  Core Capability'));
-    lines.push('  ' + data.coreCapability);
+  const company = profile.layer1?.companyIntelligence || {};
+  for (const [label, value] of [['Industry', company.industry], ['Company size', company.companySize], ['Geography', company.geography]]) {
+    if (value) lines.push(bold(`  ${label}: `) + value);
+  }
+  if (company.industry || company.companySize || company.geography) lines.push('');
+  list('Pain Triggers', company.painTriggers, warn);
+  list('Timing Signals', company.timingSignals);
+
+  for (const persona of profile.layer2?.personas || []) {
+    lines.push(bold(`  ${persona.title}`));
+    if (persona.dayInTheLife) lines.push(dim('  ' + persona.dayInTheLife));
+    lines.push('');
+    list('Success Metrics:', persona.successMetrics);
+  }
+
+  const committee = profile.layer2?.buyingCommittee || [];
+  if (committee.length) {
+    lines.push(accent('  Buying Committee'));
+    const table = new Table({ head: ['Role', 'Title'], style: { head: ['cyan'] } });
+    committee.forEach((m) => table.push([m.role || '', m.title || '']));
+    lines.push(table.toString());
     lines.push('');
   }
 
-  if (data.personas?.length) {
-    data.personas.forEach(persona => {
-      lines.push(bold(`  ${persona.role || 'Buyer'}: ${persona.title}`));
-      lines.push(dim('  ' + (persona.narrative || '')));
+  for (const m of profile.layer3?.messaging || []) {
+    if (m.coreMessage) {
+      lines.push('  ' + accent(`Message for ${m.persona}: `) + m.coreMessage);
       lines.push('');
-
-      if (persona.whyThisPersona) {
-        lines.push('  ' + accent('Why: ') + persona.whyThisPersona);
-        lines.push('');
-      }
-
-      if (persona.goals?.length) {
-        lines.push('  ' + accent('Goals:'));
-        persona.goals.forEach(g => lines.push('    ' + dim('•') + ' ' + g));
-      }
-
-      if (persona.painPoints?.length) {
-        lines.push('  ' + warn('Pain Points:'));
-        persona.painPoints.forEach(p => lines.push('    ' + dim('•') + ' ' + p));
-      }
-
-      if (persona.compellingEvents?.length) {
-        lines.push('  ' + accent('Buying Signals:'));
-        persona.compellingEvents.forEach(e => {
-          lines.push('    ' + bold(e.event));
-          lines.push('    ' + dim('Signal: ') + e.signal + dim(' — ') + e.why);
-        });
-      }
-
-      lines.push('');
-    });
+    }
   }
 
-  if (result.metadata) {
-    lines.push(dim(`  Model: ${result.metadata.model || 'AI'} | Duration: ${result.metadata.duration || '?'}ms`));
-  }
   lines.push(dim('  Powered by Andru — andru-ai.com'));
   lines.push('');
 
