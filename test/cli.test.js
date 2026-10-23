@@ -2,7 +2,9 @@
 // 2026-10-08). Pins the count, the held-back CRM tools and the help text.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { ALL_TOOLS } from '../src/commands/run.js';
 import { TOOL_DESCRIPTIONS } from '../src/commands/list.js';
 
@@ -25,12 +27,13 @@ test('help text states no stale counts or retired claims', () => {
 
 test("'run <tool> --param value' parses (it failed with 'too many arguments' in 1.1.0)", async () => {
   const { spawnSync } = await import('node:child_process');
-  const env = { ...process.env };
+  const env = { ...process.env, ANDRU_CONFIG_DIR: mkdtempSync(join(tmpdir(), 'andru-intel-')) };
   delete env.ANDRU_API_KEY;
   const r = spawnSync(process.execPath, ['src/index.js', 'run', 'consult_agent', '--question', 'test'], { cwd: new URL('..', import.meta.url), env, encoding: 'utf8' });
   const out = r.stdout + r.stderr;
   assert.doesNotMatch(out, /too many arguments/);
-  assert.match(out, /ANDRU_API_KEY required/);
+  // Copy batch 6 K4 (approved by Geter 2026-10-23).
+  assert.match(out, /Not signed in\. Run andru-intel login, or set ANDRU_API_KEY\./);
 });
 
 test('the README states the real counts and current prices', () => {

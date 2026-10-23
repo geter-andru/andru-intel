@@ -11,6 +11,8 @@
 
 import { formatJSON } from '../formatters/json.js';
 import chalk from 'chalk';
+import { requireApiKey } from '../services/credentials.js';
+import { withMaxPrice } from '../services/maxPrice.js';
 
 const PLATFORM = 'https://platform.andru-ai.com';
 
@@ -21,25 +23,20 @@ export function prepareUrl(parsed) {
 }
 
 export async function prepCommand(company, options) {
-  if (!process.env.ANDRU_API_KEY) {
-    console.error('ANDRU_API_KEY environment variable required for prep.');
-    console.error('Set it: export ANDRU_API_KEY=your_key');
-    console.error('Get one: https://platform.andru-ai.com/settings/developer');
-    process.exit(1);
-  }
+  const apiKey = requireApiKey();
 
   const { default: ora } = await import('ora');
   const spinner = ora(`Preparing your ${options.type} meeting with ${company}...`).start();
 
   try {
     const { AndruClient } = await import('../services/apiClient.js');
-    const client = new AndruClient(process.env.ANDRU_API_KEY);
+    const client = new AndruClient(apiKey);
 
-    const result = await client.callTool('get_pre_brief', {
+    const result = await client.callTool('get_pre_brief', withMaxPrice({
       companyName: company,
       briefType: options.type,
       ...(options.contact ? { contactName: options.contact } : {}),
-    });
+    }, options.maxPrice));
 
     spinner.stop();
 

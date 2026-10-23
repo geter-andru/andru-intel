@@ -9,6 +9,8 @@
  */
 
 import { formatJSON } from '../formatters/json.js';
+import { requireApiKey } from '../services/credentials.js';
+import { withMaxPrice } from '../services/maxPrice.js';
 
 // The 30 tools the Andru backend and the MCP server (1.9.0) serve (Geter, 2026-10-08). The CRM
 // tools (get_syndication_status, trigger_syndication, sync_crm_deals) are held back until CRM sync
@@ -41,21 +43,18 @@ export async function runCommand(toolName, args) {
     process.exit(1);
   }
 
-  if (!process.env.ANDRU_API_KEY) {
-    console.error('ANDRU_API_KEY required.');
-    console.error('Get one: https://platform.andru-ai.com/settings/developer');
-    process.exit(1);
-  }
+  const apiKey = requireApiKey();
 
-  // Parse remaining args as --key value pairs
-  const toolArgs = parseToolArgs(args);
+  // Parse remaining args as --key value pairs; --max-price is the CLI's own (sent as maxAmountCents).
+  const { 'max-price': maxPrice, ...rest } = parseToolArgs(args);
+  const toolArgs = withMaxPrice(rest, maxPrice);
 
   const { default: ora } = await import('ora');
   const spinner = ora(`Running ${toolName}...`).start();
 
   try {
     const { AndruClient } = await import('../services/apiClient.js');
-    const client = new AndruClient(process.env.ANDRU_API_KEY);
+    const client = new AndruClient(apiKey);
     const result = await client.callTool(toolName, toolArgs);
 
     spinner.stop();

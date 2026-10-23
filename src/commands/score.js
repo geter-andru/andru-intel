@@ -13,15 +13,11 @@
 import { buildLocalICP } from '../services/localICP.js';
 import { formatICP, formatAccountICP } from '../formatters/terminal.js';
 import { formatJSON } from '../formatters/json.js';
+import { requireApiKey } from '../services/credentials.js';
 
 export async function scoreCommand(description, options) {
   if (options.ai) {
-    if (!process.env.ANDRU_API_KEY) {
-      console.error('ANDRU_API_KEY environment variable required for --ai mode.');
-      console.error('Set it: export ANDRU_API_KEY=your_key');
-      console.error('Get one: https://platform.andru-ai.com/settings/developer');
-      process.exit(1);
-    }
+    requireApiKey();
     await scoreFromAccount(description, options);
     return;
   }
@@ -61,7 +57,7 @@ async function scoreFromAccount(description, options) {
 
   try {
     const { AndruClient } = await import('../services/apiClient.js');
-    const client = new AndruClient(process.env.ANDRU_API_KEY);
+    const client = new AndruClient(requireApiKey());
     const profile = toolData(await client.callTool('get_icp_profile', {}));
 
     spinner.stop();

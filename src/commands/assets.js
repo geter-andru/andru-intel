@@ -12,18 +12,16 @@
 
 import fs from 'node:fs';
 import chalk from 'chalk';
+import { requireApiKey } from '../services/credentials.js';
+import { withMaxPrice } from '../services/maxPrice.js';
 
 const POLL_MS = Number(process.env.ANDRU_POLL_MS) || 10_000;
 const MAX_WAIT_MS = 15 * 60_000;
 
 async function client() {
-  if (!process.env.ANDRU_API_KEY) {
-    console.error('ANDRU_API_KEY required.');
-    console.error('Get one: https://platform.andru-ai.com/settings/developer');
-    process.exit(1);
-  }
+  const apiKey = requireApiKey();
   const { AndruClient } = await import('../services/apiClient.js');
-  return new AndruClient(process.env.ANDRU_API_KEY);
+  return new AndruClient(apiKey);
 }
 
 const firstJson = (result) => {
@@ -86,7 +84,7 @@ async function collect(c, jobId, outPath) {
 
 export async function generateCommand(asset, options = {}) {
   const c = await client();
-  const result = await c.callTool('generate_asset', { asset });
+  const result = await c.callTool('generate_asset', withMaxPrice({ asset }, options.maxPrice));
   const data = firstJson(result);
   if (data.status !== 'generating') {
     console.error(data.message || 'Could not start the asset.');

@@ -8,6 +8,16 @@ Andru from your terminal: all 30 of Andru's tools, and its catalog of 139 assets
 npx andru-intel --help
 ```
 
+## Sign in
+
+```bash
+npx andru-intel login
+```
+
+andru-intel login: Sign in or create an account with your email. Saves an API key on this computer.
+
+Or set ANDRU_API_KEY.
+
 ## Setup
 
 Most commands need an Andru API key. Create one in your account at

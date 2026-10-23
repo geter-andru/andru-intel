@@ -22,8 +22,11 @@ import { wellnessCommand } from './commands/wellness.js';
 import { runCommand, ALL_TOOLS } from './commands/run.js';
 import { listCommand } from './commands/list.js';
 import { assetsCommand, generateCommand, getAssetCommand } from './commands/assets.js';
+import { loginCommand, whoamiCommand } from './commands/login.js';
 
 const program = new Command();
+// Copy batch 6 J3 (approved by Geter 2026-10-23).
+const MAX_PRICE_HELP = 'The most this call may cost, in dollars. Above it, nothing runs.';
 
 program
   .name('andru-intel')
@@ -36,7 +39,7 @@ program
   .argument('[description]', 'Your product description (quote it; not needed with --ai)')
   .option('-v, --vertical <vertical>', 'Target vertical (e.g., medical, defense, semiconductor)')
   .option('-r, --role <role>', 'Primary buyer role (e.g., CTO, CFO, "VP Sales")')
-  .option('--ai', "Show the ICP saved in your Andru account (requires ANDRU_API_KEY)")
+  .option('--ai', "Show the ICP saved in your Andru account (sign in first: andru-intel login, or set ANDRU_API_KEY)")
   .option('--json', 'Output raw JSON')
   .action(scoreCommand);
 
@@ -50,10 +53,11 @@ program
 program
   .command('prep')
   .alias('brief')
-  .description('Prepare for a meeting: the pre-meeting brief, then the conversation in Deal Prep (requires ANDRU_API_KEY)')
+  .description('Prepare for a meeting: the pre-meeting brief, then the conversation in Deal Prep (sign in first: andru-intel login, or set ANDRU_API_KEY)')
   .argument('<company>', 'Company you are meeting with')
   .option('-c, --contact <name>', 'Person you are meeting (helps find the meeting on your calendar)')
   .option('-t, --type <type>', 'Meeting type: general, discovery, demo, negotiation, renewal, expansion', 'discovery')
+  .option('--max-price <dollars>', MAX_PRICE_HELP)
   .option('--json', 'Output raw JSON')
   .action(prepCommand);
 
@@ -89,6 +93,7 @@ program
   .command('run')
   .description('Run any MCP tool directly (andru-intel run <tool> [--param value])')
   .argument('<tool>', 'Tool name (run andru-intel list to see all)')
+  .option('--max-price <dollars>', MAX_PRICE_HELP)
   .allowUnknownOption()
   // Commander 13 rejects the values of unknown --param flags as excess arguments, so
   // 'run <tool> --param value' never worked in 1.1.0. The action reads the raw argv itself.
@@ -106,6 +111,25 @@ program
   .description('Show all available tools and commands')
   .action(listCommand);
 
+// Sign in from the terminal (1.4.0; copy batch 6 K, approved by Geter 2026-10-23).
+program
+  .command('login')
+  .description('Sign in or create an account with your email. Saves an API key on this computer.')
+  .argument('[email]')
+  .action((email) => loginCommand({ email }));
+
+program
+  .command('signup')
+  .description('Same as login.')
+  .argument('[email]')
+  .action((email) => loginCommand({ email }));
+
+program
+  .command('whoami')
+  .description("Show the account, this key's limits and what it can still spend today.")
+  .option('--json', 'Output raw JSON')
+  .action(whoamiCommand);
+
 
 
 // Asset catalog (1.1.0): 139 deliverables from Andru's catalog, as markdown.
@@ -121,10 +145,11 @@ program
 
 program
   .command('generate')
-  .description('Generate an asset at its catalog price and save it as markdown (requires ANDRU_API_KEY)')
+  .description('Generate an asset at its catalog price and save it as markdown (sign in first: andru-intel login, or set ANDRU_API_KEY)')
   .argument('<asset>', 'Asset name from `andru-intel assets` (quote it)')
   .option('-o, --out <file>', 'Where to save the markdown (default: ./<asset-name>.md)')
   .option('--no-wait', 'Start it and print the job id instead of waiting')
+  .option('--max-price <dollars>', MAX_PRICE_HELP)
   .action(generateCommand);
 
 program

@@ -9,20 +9,17 @@
 
 import chalk from 'chalk';
 import { formatJSON } from '../formatters/json.js';
+import { requireApiKey } from '../services/credentials.js';
 
 export async function blueprintCommand(options) {
-  if (!process.env.ANDRU_API_KEY) {
-    console.error('ANDRU_API_KEY required for sales blueprint generation.');
-    console.error('Get one: https://platform.andru-ai.com/settings/developer');
-    process.exit(1);
-  }
+  const apiKey = requireApiKey();
 
   const { default: ora } = await import('ora');
   const spinner = ora('Generating first sales hire blueprint...').start();
 
   try {
     const { AndruClient } = await import('../services/apiClient.js');
-    const client = new AndruClient(process.env.ANDRU_API_KEY);
+    const client = new AndruClient(apiKey);
 
     const result = await client.callTool('get_sales_blueprint', {
       companyStage: options.stage || 'Series A',

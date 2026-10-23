@@ -9,20 +9,17 @@
 
 import chalk from 'chalk';
 import { formatJSON } from '../formatters/json.js';
+import { requireApiKey } from '../services/credentials.js';
 
 export async function wellnessCommand(options) {
-  if (!process.env.ANDRU_API_KEY) {
-    console.error('ANDRU_API_KEY required for wellness check.');
-    console.error('Get one: https://platform.andru-ai.com/settings/developer');
-    process.exit(1);
-  }
+  const apiKey = requireApiKey();
 
   const { default: ora } = await import('ora');
   const spinner = ora('Checking founder wellness signals...').start();
 
   try {
     const { AndruClient } = await import('../services/apiClient.js');
-    const client = new AndruClient(process.env.ANDRU_API_KEY);
+    const client = new AndruClient(apiKey);
 
     const result = await client.callTool('get_founder_wellness', {
       mode: options.mode || 'assessment',
