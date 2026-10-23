@@ -49,10 +49,10 @@ test('offline personas are titles only, no fictional names (Geter, 2026-10-09)',
   assert.doesNotMatch(out, /Janet|Marcus|Diana|"Rob"|Priya|firstName/);
 });
 
-test('the README says free calls are per channel, not shared', () => {
+test('the README says free calls are shared across MCP and A2A (Geter 2026-10-23, copy batch 9 F15)', () => {
   const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
-  assert.doesNotMatch(readme, /shared (across|with) (MCP|A2A)/i);
-  assert.match(readme, /5 free calls a day on MCP \(and another 5 on A2A\) cover pre-meeting briefs and quick thesis checks/);
+  assert.doesNotMatch(readme, /another 5/i);
+  assert.match(readme, /5 free calls a day, shared across MCP and A2A, cover pre-meeting briefs and quick thesis checks/);
 });
 
 test('tool list uses buyer-side language (approved by Geter, 2026-10-09)', () => {
