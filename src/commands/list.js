@@ -9,16 +9,16 @@ import { ALL_TOOLS } from './run.js';
 
 export const TOOL_DESCRIPTIONS = {
   get_icp_fit_score: 'Score a company against your ICP',
-  get_persona_profile: 'Buyer persona intelligence lookup',
-  get_disqualification_signals: 'Disqualification and anti-pattern detection',
-  get_messaging_framework: 'Messaging adapted to each buyer\'s communication style',
-  get_competitive_positioning: 'How you compare with a competitor, from the buyer\'s side',
-  classify_opportunity: 'Full opportunity classification',
-  get_account_plan: 'Structured account plan with MEDDICC',
-  get_evaluation_criteria: '6-value alignment scoring',
-  get_icp_profile: 'Full ICP profile (all 5 intelligence layers)',
-  discover_prospects: 'AI-powered prospect discovery',
-  get_pre_brief: 'Pre-meeting brief with talk track',
+  get_persona_profile: 'A starting picture of one buyer, to confirm with them',
+  get_disqualification_signals: 'Whether a buyer is ready, and who fits them better today',
+  get_messaging_framework: 'Your story in one buyer\'s terms',
+  get_competitive_positioning: 'The buyer\'s alternatives, weighed for the buyer',
+  classify_opportunity: 'One read on whether a buyer is ready',
+  get_account_plan: 'A plan for one target account: committee, likely champion, next steps',
+  get_evaluation_criteria: 'What the buyer said they need, against what you offer',
+  get_icp_profile: 'Your ICP: who decides, what each needs, who isn\'t a fit',
+  discover_prospects: 'Companies with a reason to change now, with sources',
+  get_pre_brief: 'What each person in the room likely thinks going in',
   batch_fit_score: 'Batch score multiple companies (max 50)',
   get_sales_blueprint: 'First sales hire blueprint',
   get_thesis_match: 'Match against VC investment theses',
@@ -63,7 +63,7 @@ export function listCommand() {
   }
 
   console.log('');
-  console.log(chalk.gray('  Usage: andru-intel run get_competitive_positioning --companyName "Acme"'));
+  console.log(chalk.gray('  Usage: andru-intel run get_competitive_positioning --companyName "<company>"'));
   console.log(chalk.gray('  Docs:  https://andru-ai.com'));
   console.log('');
 }

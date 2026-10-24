@@ -1,9 +1,9 @@
 /**
  * run command — generic MCP tool executor
  *
- * andru-intel run get_competitive_positioning --companyName "Acme Corp"
- * andru-intel run classify_opportunity --companyName "Acme" --industry SaaS
- * andru-intel run batch_fit_score --companies '["Acme","Beta"]'
+ * andru-intel run get_competitive_positioning --companyName "<company>"
+ * andru-intel run classify_opportunity --companyName "<company>" --industry SaaS
+ * andru-intel run batch_fit_score --companies '["<company>","<company>"]'
  *
  * Requires ANDRU_API_KEY.
  */
