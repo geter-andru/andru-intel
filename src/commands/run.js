@@ -12,16 +12,17 @@ import { formatJSON } from '../formatters/json.js';
 import { requireApiKey } from '../services/credentials.js';
 import { withMaxPrice } from '../services/maxPrice.js';
 
-// The 30 tools the Andru backend and the MCP server (1.9.0) serve (Geter, 2026-10-08). The CRM
+// The 28 tools the Andru backend and the MCP server serve (Geter, 2026-10-08; get_capability_profile and
+// get_founder_wellness retired 2026-10-24). The CRM
 // tools (get_syndication_status, trigger_syndication, sync_crm_deals) are held back until CRM sync
 // is ready; the backend refuses them.
 const ALL_TOOLS = [
   'get_icp_fit_score', 'get_persona_profile', 'get_disqualification_signals',
   'get_messaging_framework', 'get_competitive_positioning', 'classify_opportunity',
-  'get_account_plan', 'get_capability_profile', 'get_evaluation_criteria',
+  'get_account_plan', 'get_evaluation_criteria',
   'get_icp_profile', 'discover_prospects', 'get_pre_brief',
   'batch_fit_score', 'get_sales_blueprint', 'get_thesis_match',
-  'get_founder_wellness', 'simulate_buyer_persona',
+  'simulate_buyer_persona',
   'get_revenue_memory', 'log_revenue_insight', 'get_founder_context', 'get_memory_history',
   'get_market_signals', 'assess_company_readiness', 'get_portfolio_readiness_rollup',
   'generate_portfolio_brief', 'consult_agent',

@@ -4,7 +4,7 @@
  * andru-intel CLI
  *
  * Revenue intelligence for complex B2B growth.
- * Andru's 30 tools from your terminal.
+ * Andru's tools from your terminal.
  *
  * Two tiers:
  *   - No API key (default): instant cold-start ICP from local logic
@@ -18,7 +18,6 @@ import { personaCommand } from './commands/persona.js';
 import { prepCommand } from './commands/prep.js';
 import { blueprintCommand } from './commands/blueprint.js';
 import { thesisCommand } from './commands/thesis.js';
-import { wellnessCommand } from './commands/wellness.js';
 import { runCommand, ALL_TOOLS } from './commands/run.js';
 import { listCommand } from './commands/list.js';
 import { assetsCommand, generateCommand, getAssetCommand } from './commands/assets.js';
@@ -81,13 +80,6 @@ program
   .option('-v, --vertical <vertical>', 'Vertical focus')
   .option('--json', 'Output raw JSON')
   .action(thesisCommand);
-
-program
-  .command('wellness')
-  .description('Founder burnout risk assessment with recovery recommendations')
-  .option('-m, --mode <mode>', 'Mode: assessment or dashboard', 'assessment')
-  .option('--json', 'Output raw JSON')
-  .action(wellnessCommand);
 
 program
   .command('run')

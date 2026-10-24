@@ -50,7 +50,6 @@ npx andru-intel get-asset <job_id> --out map.md
 | `prep <company>` | Prepare for a meeting: the pre-meeting brief, then a link to the conversation in Deal Prep (alias: `brief`) |
 | `blueprint` | First sales hire blueprint |
 | `thesis "<product>"` | VC thesis matches |
-| `wellness` | Founder burnout check |
 | `run <tool> [--param value]` | Run any of Andru's 30 tools directly (`list` shows them) |
 | `list` | All tools and commands |
 

@@ -15,7 +15,6 @@ export const TOOL_DESCRIPTIONS = {
   get_competitive_positioning: 'How you compare with a competitor, from the buyer\'s side',
   classify_opportunity: 'Full opportunity classification',
   get_account_plan: 'Structured account plan with MEDDICC',
-  get_capability_profile: 'Machine-readable capability profile',
   get_evaluation_criteria: '6-value alignment scoring',
   get_icp_profile: 'Full ICP profile (all 5 intelligence layers)',
   discover_prospects: 'AI-powered prospect discovery',
@@ -23,7 +22,6 @@ export const TOOL_DESCRIPTIONS = {
   batch_fit_score: 'Batch score multiple companies (max 50)',
   get_sales_blueprint: 'First sales hire blueprint',
   get_thesis_match: 'Match against VC investment theses',
-  get_founder_wellness: 'Burnout risk assessment',
   simulate_buyer_persona: 'Prepare for a meeting: Andru asks the questions your real buyers ask',
   get_revenue_memory: 'What Andru has learned about your business over time',
   log_revenue_insight: 'Save an insight, decision, metric or pattern to memory',
@@ -52,7 +50,6 @@ export function listCommand() {
   console.log('    prep <company>           Pre-meeting brief, then the conversation in Deal Prep (alias: brief)');
   console.log('    blueprint                First sales hire blueprint');
   console.log('    thesis <description>     VC thesis matching');
-  console.log('    wellness                 Founder burnout check');
   console.log('');
 
   console.log(chalk.bold('  All Tools') + chalk.gray(' (via andru-intel run <tool> [--args])'));
