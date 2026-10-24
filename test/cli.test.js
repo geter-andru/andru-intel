@@ -131,3 +131,27 @@ test('roleplay is gone from the CLI; prep (alias brief) replaces it', async () =
   const text = ['src/index.js', 'src/commands/list.js', 'README.md'].map((f) => readFileSync(new URL(`../${f}`, import.meta.url), 'utf8')).join('\n');
   assert.doesNotMatch(text, /roleplay|rehears|\$3 or less/i);
 });
+
+test('prep sends the Deal Prep brief inputs: company, kind of meeting, who is in the room (2026-10-24)', async () => {
+  const { prepArgs, parseRoom, SITUATIONS, RETIRED_FLAGS_LINE } = await import('../src/commands/prep.js');
+  assert.deepEqual(SITUATIONS, ['discovery', 'deal', 'customer_review']);
+  assert.deepEqual(parseRoom('VP Finance, IT lead ,'), [{ title: 'VP Finance' }, { title: 'IT lead' }]);
+  assert.equal(parseRoom(Array(10).fill('CFO').join(',')).length, 8);
+  assert.deepEqual(
+    prepArgs('<company>', { situation: 'deal', room: 'CFO, CTO', meeting: 'pricing call' }),
+    { companyName: '<company>', situation: 'deal', room: [{ title: 'CFO' }, { title: 'CTO' }], meeting: 'pricing call' },
+  );
+  const old = prepArgs('<company>', { situation: 'discovery', contact: 'someone', type: 'demo' });
+  assert.equal('contactName' in old, false);
+  assert.equal('briefType' in old, false);
+  assert.match(RETIRED_FLAGS_LINE, /no longer used/);
+});
+
+test('prep help offers --situation, --room and --meeting, not --contact or --type', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const help = spawnSync(process.execPath, ['src/index.js', 'prep', '--help'], { cwd: new URL('..', import.meta.url), encoding: 'utf8' }).stdout;
+  assert.match(help, /--situation/);
+  assert.match(help, /--room/);
+  assert.match(help, /--meeting/);
+  assert.doesNotMatch(help, /--contact|--type/);
+});

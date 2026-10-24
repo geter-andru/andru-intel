@@ -12,7 +12,7 @@
  */
 
 import { readFileSync } from 'node:fs';
-import { Command } from 'commander';
+import { Command, Option } from 'commander';
 import { scoreCommand } from './commands/score.js';
 import { personaCommand } from './commands/persona.js';
 import { prepCommand } from './commands/prep.js';
@@ -54,8 +54,12 @@ program
   .alias('brief')
   .description('Prepare for a meeting: the pre-meeting brief, then the conversation in Deal Prep (sign in first: andru-intel login, or set ANDRU_API_KEY)')
   .argument('<company>', 'Company you are meeting with')
-  .option('-c, --contact <name>', 'Person you are meeting (helps find the meeting on your calendar)')
-  .option('-t, --type <type>', 'Meeting type: general, discovery, demo, negotiation, renewal, expansion', 'discovery')
+  .option('-s, --situation <kind>', 'What kind of meeting: discovery, deal or customer_review', 'discovery')
+  .option('-r, --room <titles>', 'Who will be there, by title, separated by commas (up to 8)')
+  .option('-m, --meeting <sentence>', 'The meeting in a sentence if it isn\'t on your calendar')
+  // Removed with the Deal Prep brief (2026-10-24); still accepted so old scripts get a clear line.
+  .addOption(new Option('-c, --contact <name>').hideHelp())
+  .addOption(new Option('-t, --type <type>').hideHelp())
   .option('--max-price <dollars>', MAX_PRICE_HELP)
   .option('--json', 'Output raw JSON')
   .action(prepCommand);

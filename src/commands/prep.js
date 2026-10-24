@@ -1,10 +1,11 @@
 /**
  * prep command (1.3.0)
  *
- * andru-intel prep "Acme Corp" --contact "Jane Doe" --type discovery
- * andru-intel brief "Acme Corp"          (same command, the name it had before)
+ * andru-intel prep "<company>" --situation discovery --room "<title>, <title>"
+ * andru-intel brief "<company>"          (same command, the name it had before)
  *
- * Writes the pre-meeting brief, then points to Deal Prep on the platform for the conversation itself
+ * Writes the pre-meeting brief (the Deal Prep brief since 2026-10-24: what each person in the room
+ * likely thinks going in), then points to Deal Prep on the platform for the conversation itself
  * (the buyers played by Andru): a back-and-forth the terminal can't hold well, and Deal Prep keeps
  * the meeting's context (Geter, 2026-10-22). Requires ANDRU_API_KEY.
  */
@@ -22,21 +23,43 @@ export function prepareUrl(parsed) {
   return eventId ? `${PLATFORM}/deal-prep?meeting=${encodeURIComponent(eventId)}` : `${PLATFORM}/deal-prep`;
 }
 
+export const SITUATIONS = ['discovery', 'deal', 'customer_review'];
+export const RETIRED_FLAGS_LINE = "--contact and --type are no longer used; say who's in the room with --room.";
+
+/** "VP Finance, IT lead" → [{ title: 'VP Finance' }, { title: 'IT lead' }] (at most 8). */
+export function parseRoom(value) {
+  if (!value) return [];
+  return String(value).split(',').map((t) => t.trim()).filter(Boolean).slice(0, 8).map((title) => ({ title }));
+}
+
+/** get_pre_brief's arguments from the command line (B3: the Deal Prep brief's inputs). */
+export function prepArgs(company, options = {}) {
+  const room = parseRoom(options.room);
+  return {
+    companyName: company,
+    ...(options.situation ? { situation: options.situation } : {}),
+    ...(room.length ? { room } : {}),
+    ...(options.meeting ? { meeting: options.meeting } : {}),
+  };
+}
+
 export async function prepCommand(company, options) {
   const apiKey = requireApiKey();
+  if (options.contact || options.type) console.log(chalk.yellow(RETIRED_FLAGS_LINE));
+  if (options.situation && !SITUATIONS.includes(options.situation)) {
+    console.error(chalk.red(`--situation must be one of: ${SITUATIONS.join(', ')}`));
+    process.exit(1);
+  }
 
   const { default: ora } = await import('ora');
-  const spinner = ora(`Preparing your ${options.type} meeting with ${company}...`).start();
+  const kind = String(options.situation || 'discovery').replace('_', ' ');
+  const spinner = ora(`Preparing your ${kind} meeting with ${company}...`).start();
 
   try {
     const { AndruClient } = await import('../services/apiClient.js');
     const client = new AndruClient(apiKey);
 
-    const result = await client.callTool('get_pre_brief', withMaxPrice({
-      companyName: company,
-      briefType: options.type,
-      ...(options.contact ? { contactName: options.contact } : {}),
-    }, options.maxPrice));
+    const result = await client.callTool('get_pre_brief', withMaxPrice(prepArgs(company, options), options.maxPrice));
 
     spinner.stop();
 
