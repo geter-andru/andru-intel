@@ -37,9 +37,8 @@ test("'run <tool> --param value' parses (it failed with 'too many arguments' in 
   assert.match(out, /Not signed in\. Run andru-intel login, or set ANDRU_API_KEY\./);
 });
 
-// The README's "30" tool count is public copy: its new wording awaits Geter (2026-10-24). Until it is
-// approved this check is a todo, and it must pass again before the next npm publish.
-test('the README states the real tool count', { todo: 'README count wording awaits Geter (2026-10-24)' }, () => {
+// The README states the real tool count (wording approved 2026-10-24, listings 41).
+test('the README states the real tool count', () => {
   const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
   assert.match(readme, new RegExp(`all ${ALL_TOOLS.length} of Andru's tools`));
 });

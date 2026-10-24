@@ -2,7 +2,7 @@
 
 Revenue intelligence for complex B2B growth. Your agent builds the assets technical founders sell with, and prepares them for real buyer conversations.
 
-Andru from your terminal: all 30 of Andru's tools, and its catalog of 139 assets (board decks, playbooks, business cases) generated from what Andru knows about your company and saved as markdown.
+Andru from your terminal: all 28 of Andru's tools, and its catalog of 139 assets (board decks, playbooks, business cases) generated from what Andru knows about your company and saved as markdown.
 
 ```bash
 npx andru-intel --help
@@ -50,7 +50,7 @@ npx andru-intel get-asset <job_id> --out map.md
 | `prep <company>` | Prepare for a meeting: the pre-meeting brief, then a link to the conversation in Deal Prep (alias: `brief`) |
 | `blueprint` | First sales hire blueprint |
 | `thesis "<product>"` | VC thesis matches |
-| `run <tool> [--param value]` | Run any of Andru's 30 tools directly (`list` shows them) |
+| `run <tool> [--param value]` | Run any of Andru's 28 tools directly (`list` shows them) |
 | `list` | All tools and commands |
 
 ## Pricing
