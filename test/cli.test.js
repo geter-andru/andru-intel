@@ -58,7 +58,13 @@ test('offline personas are titles only, no fictional names (Geter, 2026-10-09)',
 test('the README says free calls are shared across MCP and A2A (Geter 2026-10-23, copy batch 9 F15)', () => {
   const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
   assert.doesNotMatch(readme, /another 5/i);
-  assert.match(readme, /5 free calls a day, shared across MCP and A2A, cover pre-meeting briefs and quick thesis checks/);
+  assert.match(readme, /5 free calls a day, shared across MCP and A2A, cover quick thesis checks/);
+});
+
+test('the README says pre-meeting briefs are free, never $3 (brief merge B2, 2026-10-26)', () => {
+  const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
+  assert.match(readme, /pre-meeting briefs \(free, up to 10 a day\)/);
+  assert.doesNotMatch(readme, /pre-meeting briefs \(\$3\)/);
 });
 
 test('tool list uses buyer-side language (approved by Geter, 2026-10-09)', () => {
